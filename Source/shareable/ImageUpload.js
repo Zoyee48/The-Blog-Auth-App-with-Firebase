@@ -1,80 +1,57 @@
-import React,
-{ useState, useEffect } from 'react';
-import
-{ View, Platform } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { Button, Image, View, Platform ,Text} from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
-import
-{ Avatar } from 'react-native-elements';
+import Constants from 'expo-constants';
+import { Avatar, Accessory } from 'react-native-elements';
 
-const ImagePickerExample = () => {
+const ImagePickerExample=() =>{
 
+  const [image, setImage] = useState(null);
 
-
-    const [image, setImage] = useState( null );
-
-    useEffect( () => {
-
-        ( async () => {
-
-            if ( Platform.OS !== 'web' )
-            {
-
-                const
-                { status } = await ImagePicker.requestCameraRollPermissionsAsync();
-                if ( status !== 'granted' )
-                {
-
-                    alert( 'Sorry, we need camera roll permissions to make this work!' );
-
-                }
-
-            }
-
-        } )();
-
-    }, [] );
-
-    const pickImage = async () => {
-
-        let result = await ImagePicker.launchImageLibraryAsync( {
-
-            mediaTypes: ImagePicker.MediaTypeOptions.All,
-            allowsEditing: true,
-            aspect: [
-                4, 3
-            ],
-            quality: 1
-
-        } );
-
-        console.log( result );
-
-        if ( ! result.cancelled )
-        {
-
-            setImage( result.uri );
-
+  useEffect(() => {
+    (async () => {
+      if (Platform.OS !== 'web') {
+        const { status } = await ImagePicker.requestCameraRollPermissionsAsync();
+        if (status !== 'granted') {
+          alert('Sorry, we need camera roll permissions to make this work!');
         }
+      }
+    })();
+  }, []);
 
-    };
+  const pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
 
+    console.log(result);
 
-    return (<View>
-        <Avatar size="xlarge"
+    if (!result.cancelled) {
+      setImage(result.uri);
+    }
+  };
+  
 
-            onPress={
-                function ()
-                {
-
-                    pickImage()
-
-                }
-            }
-            source={
-                { uri: image }
-            }/>
-    </View>);
-
+  return (
+    <View>
+      <Avatar
+            size="xlarge"
+            
+            onPress={function(){
+              pickImage()
+            }}
+            source={{
+              uri: image 
+                 }}
+                />
+   
+  
+   
+   </View>
+  );
 }
 
-export default ImagePickerExample
+export default  ImagePickerExample
